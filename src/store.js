@@ -20,7 +20,7 @@ const mockProjects = [
 function loadMockProjects() {
   return new Promise(resolve => {
     //console.log(`[${new Date().toLocaleString()}] mock to loading projects from server`);
-    setTimeout( () => {resolve(mockProjects)}, 5000);
+    setTimeout( () => {resolve(mockProjects)}, 1000);
   });
 }
 
