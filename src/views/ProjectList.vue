@@ -1,13 +1,18 @@
 <template>
   <div class="project-list">
-    <input type="text" v-model="searchTerm" /> <input type="submit" @click="onSearchProjects" />
+    <input
+      v-model="searchTerm"
+      type="text"></input>
+    <input 
+      type="submit" 
+      @click="onSearchProjects"></input>
     <h1>Project List</h1>
 
-    <Log :value="reload" :format="(s)=>`reload: ${s}`" :logger="doAlert"/>
+    <Log :value="reload" :format="(_)=>`look for project ${searchTerm}`" />
 
     <Async :func="doSearchProjects" :reload="reload" v-slot="slotProps">
       <template v-if="slotProps.error">
-        Error: {{slotProps.error}}
+        <span class="project-list-error">Error: {{slotProps.error}}</span>
       </template>
       <template v-else-if="slotProps.isPending">
         loading...
@@ -55,5 +60,9 @@ export default {
 <style scoped>
   ul.project-list {
     list-style-type: none;
+  }
+
+  .project-list-error {
+    color: red;
   }
 </style>

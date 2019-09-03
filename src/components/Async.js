@@ -19,7 +19,6 @@ export default {
       this.isPending = true;
       try {
         this.result = await this.func.apply(null);
-        //throw "Sever is down"
       } catch (e) {
         this.error = e;
       } finally {
