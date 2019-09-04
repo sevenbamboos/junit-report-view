@@ -13,7 +13,6 @@
     <Log 
       :value="reload" 
       :format="(_)=>`look for project ${searchTerm}`" 
-      :logger="doAlert"
     />
 
     <Async 
