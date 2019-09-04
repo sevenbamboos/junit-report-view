@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import Async from './components/Async'
 import Log from './components/Log'
+import 'bulma/css/bulma.css'
 
 Vue.component('Async', Async);
 Vue.component('Log', Log);

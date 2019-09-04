@@ -1,10 +1,21 @@
 <template>
-  <div id="app">
+  <div 
+    id="app" 
+    class="container"
+  >
     <div id="nav">
-      <router-link to="/project-list">Projects</router-link> |
-      <router-link to="/project/1">Project 1</router-link> |
+      <router-link 
+        to="/project-list"
+      >
+        Projects
+      </router-link> |
+      <router-link 
+        to="/project/1"
+      >
+        Project 1
+      </router-link> |
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
