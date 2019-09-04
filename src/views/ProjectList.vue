@@ -65,58 +65,7 @@
                   {{ project.name }}
                 </div>
                 <template v-if="project.latestReport">
-                  <div class="level has-background-light">
-                    <div class="level-item has-text-centered">
-                      <div>
-                        <p class="heading">
-                          Newly Failed
-                        </p>
-                        <p class="title">
-                          {{ project.latestReport.newlyFailed }}
-                        </p>
-                      </div>
-                    </div>
-                    <div class="level-item has-text-centered">
-                      <div>
-                        <p class="heading">
-                          Fixed
-                        </p>
-                        <p class="title">
-                          {{ project.latestReport.fixed }}
-                        </p>
-                      </div>
-                    </div>
-                    <div class="level-item has-text-centered">
-                      <div>
-                        <p class="heading">
-                          Ignored
-                        </p>
-                        <p class="title">
-                          {{ project.latestReport.ignore }}
-                        </p>
-                      </div>
-                    </div>
-                    <div class="level-item has-text-centered">
-                      <div>
-                        <p class="heading">
-                          New
-                        </p>
-                        <p class="title">
-                          {{ project.latestReport.new }}
-                        </p>
-                      </div>
-                    </div>
-                    <div class="level-item has-text-centered">
-                      <div>
-                        <p class="heading">
-                          Deleted
-                        </p>
-                        <p class="title">
-                          {{ project.latestReport.deleted }}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  <ReportBrief :report="project.latestReport" />
                 </template>
               </div>
             </div>
@@ -129,9 +78,13 @@
 
 <script>
 import {store, searchProjects} from '../store'
+import ReportBrief from '../components/ReportBrief.vue'
 
 export default {
   name: 'Projects',
+  components: {
+    'ReportBrief': ReportBrief
+  },
   data() {
     return {
       searchTerm: '',
