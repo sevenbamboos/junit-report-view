@@ -50,6 +50,16 @@
         </p>
       </div>
     </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">
+          Time 
+        </p>
+        <p class="title">
+          {{ formattedTime }}
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -60,6 +70,11 @@ export default {
     report: {
       type: Object,
       default: null
+    }
+  },
+  computed: {
+    formattedTime() {
+      return new Date(Date.parse(this.report.time)).toLocaleDateString()
     }
   }
 }

@@ -11,28 +11,28 @@
           <div class="field is-grouped is-grouped-centered">
             <div class="control has-icons-left has-icons-right">
               <input 
-                class="input is-primary" 
+                class="input is-primary is-small" 
                 v-model="searchTerm"
                 type="text"
                 placeholder="Find a project"
+                @keyup.enter="onSearchProjects"
               >
               <span class="icon is-left">
                 <i class="fas fa-search" />
               </span>
             </div>
             <div class="control">
-              <button 
+              <a 
                 @click="onSearchProjects"
-                class="button is-primary"
+                class="button is-primary is-small is-outlined"
               >
                 Search
-              </button>
+              </a>
             </div>
           </div>
         </div>
       </div>
     </nav>
-    <h1>Project List</h1>
 
     <Log 
       :value="reload" 
@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import {store, searchProjects} from '../store'
+import { store } from '../store'
 import ReportBrief from '../components/ReportBrief.vue'
 
 export default {
@@ -105,7 +105,7 @@ export default {
       this.reload = new Date();
     },
     doSearchProjects() {
-      return searchProjects(this.searchTerm);
+      return store.searchProjects(this.searchTerm);
     },
     doAlert(s) {
       alert(s);
