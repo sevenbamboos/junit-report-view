@@ -3,12 +3,25 @@ import { mockProjects } from './seeds'
 
 export const store = {
   projects: [],
+  inactiveProjects: [],
 
   loadMockProjects() {
     return new Promise(resolve => {
       //console.log(`[${new Date().toLocaleString()}] mock to loading projects from server`);
       setTimeout( () => {resolve(mockProjects)}, 1000);
     });
+  },
+
+  hideProject(projectId) {
+    let changed = false;
+    for (let proj of this.projects) {
+      if (proj.id === projectId) {
+        this.inactiveProjects.push(projectId);
+        changed = true;
+      }
+    }
+
+    return changed;
   },
 
   async searchProjects(term) {
@@ -19,9 +32,13 @@ export const store = {
 
     const result = term ? dataSource.filter(p => p.name.indexOf(term) !== -1) : dataSource;
 
-    result.forEach( p => store.projects.push(p) );
+    result.forEach( p => {
+      if (this.inactiveProjects.indexOf(p.id) === -1) {
+        store.projects.push(p);
+      }
+    });
 
-    return result;
+    return store.projects;
     //throw "server is down"
   }
 }

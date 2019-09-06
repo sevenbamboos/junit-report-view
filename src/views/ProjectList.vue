@@ -68,6 +68,14 @@
                   <ReportBrief :report="project.latestReport" />
                 </template>
               </div>
+              <div class="media-right">
+                <a 
+                  @click="onHideProject(project.id)"
+                  class="button is-danger is-outlined"
+                >
+                  <i class="fas fa-minus-circle" />
+                </a>
+              </div>
             </div>
           </li>
         </ul>
@@ -78,6 +86,7 @@
 
 <script>
 import { store } from '../store'
+import EventBus from '../event-bus'
 import ReportBrief from '../components/ReportBrief.vue'
 
 export default {
@@ -97,12 +106,23 @@ export default {
       return this.projects ? this.projects.length : 0
     }
   },
+  created() {
+    EventBus.$on('hide-project', projectId => {
+      if (store.hideProject(projectId)) {
+        this.reload = new Date();
+        console.log('hide projects');
+      }
+    });
+  },
   mounted() {
     this.reload = new Date();
   },
   methods: {
     onSearchProjects() {
       this.reload = new Date();
+    },
+    onHideProject(projectId) {
+      EventBus.$emit('hide-project', projectId);
     },
     doSearchProjects() {
       return store.searchProjects(this.searchTerm);

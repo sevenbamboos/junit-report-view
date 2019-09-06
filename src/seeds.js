@@ -4,6 +4,7 @@ export const mockProjects = [
   {
     id: 101,
     name: 'project-1, a small js component',
+    active: true,
     latestReport: {
       id: 101,
       time: '2019-09-04',
@@ -17,6 +18,7 @@ export const mockProjects = [
   {
     id: 102,
     name: 'project-2, shared library',
+    active: true,
     latestReport: {
       id: 102,
       time: '2019-09-01',
@@ -29,6 +31,7 @@ export const mockProjects = [
   },
   {
     id: 103,
-    name: 'project-3, 3rd party library'
+    name: 'project-3, 3rd party library',
+    active: true
   },
 ]
