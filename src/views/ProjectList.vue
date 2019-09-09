@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { store } from '../store'
+import { store as oldStore } from '../old-store'
 import EventBus from '../event-bus'
 import ReportBrief from '../components/ReportBrief.vue'
 
@@ -97,7 +97,7 @@ export default {
   data() {
     return {
       searchTerm: '',
-      projects: store.projects,
+      projects: oldStore.projects,
       reload: undefined
     }
   },
@@ -108,7 +108,7 @@ export default {
   },
   created() {
     EventBus.$on('hide-project', projectId => {
-      if (store.hideProject(projectId)) {
+      if (oldStore.hideProject(projectId)) {
         this.reload = new Date();
         console.log('hide projects');
       }
@@ -125,7 +125,7 @@ export default {
       EventBus.$emit('hide-project', projectId);
     },
     doSearchProjects() {
-      return store.searchProjects(this.searchTerm);
+      return oldStore.searchProjects(this.searchTerm);
     },
     doAlert(s) {
       alert(s);

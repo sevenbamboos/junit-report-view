@@ -3,17 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "mock-server": "./node_modules/.bin/json-server projects.json",
-    "generate-mock-data": "node src/generate-mock-data.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "generate-mock-data": "node src/generate-mock-data.js",
+    "mock-server": "./node_modules/.bin/json-server projects.json"
   },
   "dependencies": {
     "bulma": "^0.7.5",
     "core-js": "^2.6.5",
     "vue": "^2.6.10",
-    "vue-router": "^3.0.3"
+    "vue-router": "^3.0.3",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",
@@ -37,6 +38,9 @@
     ],
     "parserOptions": {
       "parser": "babel-eslint"
+    },
+    "rules": {
+      "no-console": "off"
     }
   },
   "postcss": {

@@ -1,44 +1,16 @@
-//import {TestCaseStatus} from './model'
-import { mockProjects } from './seeds'
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-export const store = {
-  projects: [],
-  inactiveProjects: [],
+Vue.use(Vuex)
 
-  loadMockProjects() {
-    return new Promise(resolve => {
-      //console.log(`[${new Date().toLocaleString()}] mock to loading projects from server`);
-      setTimeout( () => {resolve(mockProjects)}, 1000);
-    });
+export default new Vuex.Store({
+  state: {
+
   },
+  mutations: {
 
-  hideProject(projectId) {
-    let changed = false;
-    for (let proj of this.projects) {
-      if (proj.id === projectId) {
-        this.inactiveProjects.push(projectId);
-        changed = true;
-      }
-    }
-
-    return changed;
   },
+  actions: {
 
-  async searchProjects(term) {
-
-    store.projects.splice(0, store.projects.length);
-
-    const dataSource = await this.loadMockProjects();
-
-    const result = term ? dataSource.filter(p => p.name.indexOf(term) !== -1) : dataSource;
-
-    result.forEach( p => {
-      if (this.inactiveProjects.indexOf(p.id) === -1) {
-        store.projects.push(p);
-      }
-    });
-
-    return store.projects;
-    //throw "server is down"
   }
-}
+})
