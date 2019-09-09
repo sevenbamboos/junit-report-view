@@ -1,9 +1,3 @@
-const faker = require('faker');
-
-const PROJECT_COUNT = 2;
-const REPORT_COUNT = 3;
-const TEST_COUNT = 2;
-
 // TODO share with src/model.js
 const TestCaseStatus = {
   PASSED: 'passed',
@@ -11,9 +5,13 @@ const TestCaseStatus = {
   IGNORE: 'ignore'
 };
 
-const TestCaseStatusArray = [TestCaseStatus.PASSED, TestCaseStatus.FAILED, TestCaseStatus.IGNORE];
+const faker = require('faker');
 
-const passRate = [0, 80, 95];
+const PROJECT_COUNT = 2;
+const REPORT_COUNT = 3;
+const TEST_COUNT = 2;
+
+const TestCaseStatusArray = [TestCaseStatus.PASSED, TestCaseStatus.FAILED, TestCaseStatus.IGNORE];
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * Math.floor(max-min)) + min;
@@ -25,6 +23,7 @@ function getRandomStatusFrom(someStatus) {
 }
 
 function getRandomStatus(previous) {
+  const passRate = [0, 80, 95];
   const seed = getRandomInt(0, 100);
   if (previous) {
     if (seed < 80) return previous;

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "mock-server": "./node_modules/.bin/json-server projects.json",
-    "generate-mock-data": "node generate-mock-data.js",
+    "generate-mock-data": "node src/generate-mock-data.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
