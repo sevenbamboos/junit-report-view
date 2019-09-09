@@ -2,11 +2,11 @@
   <div class="project-list">
     <nav class="level">
       <div class="level-left">
-        <!-- <div class="level-item">
+        <div class="level-item">
           <p>
             <strong>{{ projectCount }}</strong> projects
           </p>
-        </div> -->
+        </div>
         <div class="level-item">
           <div class="field is-grouped is-grouped-centered">
             <div class="control has-icons-left has-icons-right">
@@ -34,16 +34,26 @@
       </div>
     </nav>
 
-      <template v-if="error">
-        <span class="project-list-error">Error: {{ error }}</span>
+    <Log 
+      :value="reload" 
+      :format="(_)=>`look for project ${searchTerm}`" 
+    />
+
+    <Async 
+      v-slot="slotProps" 
+      :func="doSearchProjects" 
+      :reload="reload"
+    >
+      <template v-if="slotProps.error">
+        <span class="project-list-error">Error: {{ slotProps.error }}</span>
       </template>
-      <template v-else-if="loading">
+      <template v-else-if="slotProps.isPending">
         loading...
       </template>
       <template v-else>
         <ul class="project-list">
           <li 
-            v-for="(project, index) of projects" 
+            v-for="(project, index) of slotProps.result" 
             :key="project.id"
           >
             <div class="media">
@@ -54,47 +64,71 @@
                 <div class="has-text-left">
                   {{ project.name }}
                 </div>
+                <template v-if="project.latestReport">
+                  <ReportBrief :report="project.latestReport" />
+                </template>
+              </div>
+              <div class="media-right">
+                <a 
+                  @click="onHideProject(project.id)"
+                  class="button is-danger is-outlined"
+                >
+                  <i class="fas fa-minus-circle" />
+                </a>
               </div>
             </div>
           </li>
         </ul>
       </template>
+    </Async>
   </div>
 </template>
 
 <script>
-
-import Vuex from 'vuex'
+import { store as oldStore } from '../old-store'
+import EventBus from '../event-bus'
+import ReportBrief from '../components/ReportBrief.vue'
 
 export default {
   name: 'Projects',
+  components: {
+    'ReportBrief': ReportBrief
+  },
   data() {
     return {
       searchTerm: '',
-      loading: undefined,
-      error: undefined
+      projects: oldStore.projects,
+      reload: undefined
     }
   },
   computed: {
-    ...Vuex.mapGetters({
-      projects: 'projects'
-    }) 
+    projectCount() {
+      return this.projects ? this.projects.length : 0
+    }
   },
   created() {
+    EventBus.$on('hide-project', projectId => {
+      if (oldStore.hideProject(projectId)) {
+        this.reload = new Date();
+        console.log('hide projects');
+      }
+    });
   },
   mounted() {
+    this.reload = new Date();
   },
   methods: {
-    async onSearchProjects() {
-      this.loading = true;
-      this.error = undefined;
-      try {
-        await this.$store.dispatch('searchProjects', this.searchTerm)
-      } catch (error) {
-        this.error = error;
-      } finally {
-        this.loading = false;
-      }
+    onSearchProjects() {
+      this.reload = new Date();
+    },
+    onHideProject(projectId) {
+      EventBus.$emit('hide-project', projectId);
+    },
+    doSearchProjects() {
+      return oldStore.searchProjects(this.searchTerm);
+    },
+    doAlert(s) {
+      alert(s);
     }
   }
 }
