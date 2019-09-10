@@ -1,18 +1,24 @@
 <template>
   <div class="project">
     <router-link to="/project-list">Back</router-link> |
-    <h1>Project: {{ projectId }}</h1>
-
-    <template v-if="error">
-      ERROR: {{ error }}
-    </template>
-    <template v-else-if="loading">
-      loading...
-    </template>
-    <template v-else>
-      {{ project.name }}
-    </template>
-
+    <Async 
+      v-slot="slotProps" 
+      :func="doGetProject" 
+      :reload="reload"
+    >
+      <template v-if="slotProps.error">
+        ERROR: {{ slotProps.error }}
+      </template>
+      <template v-else-if="slotProps.isPending">
+        loading...
+      </template>
+      <template v-else>
+        <div>
+          <h1>Project: {{ projectId }}</h1>
+          {{ project.name }}
+        </div>
+      </template>
+    </Async>
   </div>
 </template>
 
@@ -28,8 +34,7 @@ export default {
 
   data() {
     return {
-      loading: false,
-      error: undefined
+      reload: undefined
     };
   },
 
@@ -43,19 +48,12 @@ export default {
   },
 
   mounted() {
-    this.doGetProject().then(() => console.log("Finished getProject"));
+    this.reload = new Date();
   },
 
   methods: {
     async doGetProject() {
-      this.loading = true;
-      try {
-        this.$store.dispatch('projects/getProject', this.projectId);
-      } catch (error) {
-        this.error = error;
-      } finally {
-        this.loading = false;
-      }
+      await this.$store.dispatch('projects/getProject', this.projectId);
     }
   }
 }
