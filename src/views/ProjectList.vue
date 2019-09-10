@@ -2,11 +2,11 @@
   <div class="project-list">
     <nav class="level">
       <div class="level-left">
-        <!-- <div class="level-item">
+        <div class="level-item">
           <p>
             <strong>{{ projectCount }}</strong> projects
           </p>
-        </div> -->
+        </div>
         <div class="level-item">
           <div class="field is-grouped is-grouped-centered">
             <div class="control has-icons-left has-icons-right">
@@ -34,10 +34,15 @@
       </div>
     </nav>
 
-      <template v-if="error">
-        <span class="project-list-error">Error: {{ error }}</span>
+    <Async 
+      v-slot="slotProps" 
+      :func="doSearchProjects" 
+      :reload="reload"
+    >
+      <template v-if="slotProps.error">
+        <span class="project-list-error">Error: {{ slotProps.error }}</span>
       </template>
-      <template v-else-if="loading">
+      <template v-else-if="slotProps.isPending">
         loading...
       </template>
       <template v-else>
@@ -59,6 +64,7 @@
           </li>
         </ul>
       </template>
+    </Async>
   </div>
 </template>
 
@@ -71,30 +77,26 @@ export default {
   data() {
     return {
       searchTerm: '',
-      loading: undefined,
-      error: undefined
+      reload: undefined
     }
   },
   computed: {
     ...Vuex.mapGetters({
-      projects: 'projects'
+      projects: 'projectList/projects',
+      projectCount: 'projectList/projectCount'
     }) 
   },
-  created() {
-  },
   mounted() {
+    this.reload = new Date();
   },
   methods: {
-    async onSearchProjects() {
-      this.loading = true;
-      this.error = undefined;
-      try {
-        await this.$store.dispatch('searchProjects', this.searchTerm)
-      } catch (error) {
-        this.error = error;
-      } finally {
-        this.loading = false;
-      }
+
+    onSearchProjects() {
+      this.reload = new Date();
+    },
+
+    async doSearchProjects() {
+        await this.$store.dispatch('projectList/searchProjects', this.searchTerm)
     }
   }
 }
