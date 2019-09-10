@@ -82,8 +82,8 @@ export default {
   },
   computed: {
     ...Vuex.mapGetters({
-      projects: 'projectList/projects',
-      projectCount: 'projectList/projectCount'
+      projects: 'projects/projects',
+      projectCount: 'projects/projectCount'
     }) 
   },
   mounted() {
@@ -96,7 +96,7 @@ export default {
     },
 
     async doSearchProjects() {
-        await this.$store.dispatch('projectList/searchProjects', this.searchTerm)
+        await this.$store.dispatch('projects/searchProjects', this.searchTerm)
     }
   }
 }

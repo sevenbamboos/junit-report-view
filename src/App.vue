@@ -10,7 +10,7 @@
         Projects
       </router-link> |
       <router-link 
-        to="/project/1"
+        to="/project/7d4c3485-3c46-4127-b9c2-0507b193a123"
       >
         Project 1
       </router-link> |
