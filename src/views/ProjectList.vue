@@ -60,6 +60,9 @@
                   {{ project.name }}
                 </div>
               </div>
+              <div class="media-right">
+                <a @click="goToProject(project)">View</a>
+              </div>
             </div>
           </li>
         </ul>
@@ -97,9 +100,14 @@ export default {
 
     async doSearchProjects() {
         await this.$store.dispatch('projects/searchProjects', this.searchTerm)
+    },
+
+    goToProject(project) {
+      this.$store.dispatch('pushBreadCrumbForProject', project);
+      this.$router.push(`/project/${project.id}`);
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

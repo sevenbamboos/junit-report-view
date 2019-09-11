@@ -4,21 +4,42 @@
     class="container"
   >
     <div id="nav">
-      <router-link 
+      <!-- <router-link 
         to="/project-list"
       >
         Projects
-      </router-link> |
-      <router-link 
-        to="/project/f7f7fc92-466a-471b-aba2-2d24a26af492"
-      >
-        Project 1
-      </router-link> |
+      </router-link> -->
+      <span v-for="breadcrumb of breadcrumbs" :key="breadcrumb.name">
+        <router-link :to="breadcrumb.url">
+          {{ breadcrumb.name }}
+        </router-link>
+        >>
+      </span>
     </div>
     <router-view />
   </div>
 </template>
+<script>
 
+import Vuex from 'vuex'
+
+export default {
+  name: 'App',
+
+  computed: {
+    ...Vuex.mapGetters({
+      breadcrumbs: 'breadcrumbs'
+    }),
+    projectId () {
+      return this.$route.params.id
+    }
+  },
+
+  created() {
+    this.$store.dispatch('pushBreadCrumbForProjectList');
+  }
+}
+</script>
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -27,5 +48,9 @@
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+
+}
+#nav {
+  text-align: left;
 }
 </style>

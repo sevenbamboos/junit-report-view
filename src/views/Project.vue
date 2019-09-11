@@ -1,6 +1,6 @@
 <template>
   <div class="project">
-    <router-link to="/project-list">Back</router-link> |
+    <a @click="backToProjects">Back</a> |
     <Async 
       v-slot="slotProps" 
       :func="doGetProject" 
@@ -54,6 +54,10 @@ export default {
   methods: {
     async doGetProject() {
       await this.$store.dispatch('projects/getProject', this.projectId);
+    },
+    backToProjects() {
+      this.$store.dispatch('popBreadCrumb');
+      this.$router.push('/project-list');
     }
   }
 }

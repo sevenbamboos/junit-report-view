@@ -6,6 +6,16 @@ export async function searchProjects(term) {
 }
 
 export async function getProject(id) {
+  // return new Promise((resolve, reject) => {
+  //   setTimeout(async () => {
+  //     try {
+  //       const response = await axios.get(`http://localhost:3000/projects/${id}`);
+  //       resolve(response.data);
+  //     } catch (error) {
+  //       reject(error);
+  //     }
+  //   }, 3000);
+  // });
   const response = await axios.get(`http://localhost:3000/projects/${id}`);
   return response.data;
 }
