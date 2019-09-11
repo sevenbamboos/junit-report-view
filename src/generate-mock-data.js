@@ -7,9 +7,9 @@ const TestCaseStatus = {
 
 const faker = require('faker');
 
-const PROJECT_COUNT = 2;
-const REPORT_COUNT = 3;
-const TEST_COUNT = 2;
+const PROJECT_COUNT = 5;
+const REPORT_COUNT = 10;
+const TEST_COUNT = 30;
 
 const TestCaseStatusArray = [TestCaseStatus.PASSED, TestCaseStatus.FAILED, TestCaseStatus.IGNORE];
 

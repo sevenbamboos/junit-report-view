@@ -9,6 +9,17 @@ import store from './store'
 Vue.component('Async', Async);
 Vue.component('Log', Log);
 
+Vue.filter('localeDate', timeStampText => {
+  if (!timeStampText) return ''
+  const date = new Date(timeStampText);
+  if (isNaN(date)) {
+    console.warn();
+    return timeStampText;
+  } else {
+    return date.toLocaleDateString();
+  }
+})
+
 Vue.config.productionTip = false
 
 new Vue({

@@ -1,6 +1,6 @@
 <template>
   <div class="project">
-    <a @click="backToProjects">Back</a> |
+    <a @click="backToProjects">Back</a>
     <Async 
       v-slot="slotProps" 
       :func="doGetProject" 
@@ -14,8 +14,14 @@
       </template>
       <template v-else>
         <div>
-          <h1>Project: {{ projectId }}</h1>
-          {{ project.name }}
+          <div class="level" v-for="report of reports" :key="report.id">
+            <div class="level-left">
+              <a @click="goToReport(report)">{{ report.name }}</a>
+            </div>
+            <div class="level-right">
+              {{ report.time | localeDate }}
+            </div>
+          </div>
         </div>
       </template>
     </Async>
@@ -28,9 +34,6 @@ import Vuex from 'vuex'
 
 export default {
   name: 'Project',
-  props: {
-    msg: String
-  },
 
   data() {
     return {
@@ -40,7 +43,8 @@ export default {
 
   computed: {
     ...Vuex.mapGetters({
-      project: 'projects/project'
+      project: 'projects/project',
+      reports: 'projects/reports',
     }),
     projectId () {
       return this.$route.params.id
@@ -58,7 +62,11 @@ export default {
     backToProjects() {
       this.$store.dispatch('popBreadCrumb');
       this.$router.push('/project-list');
-    }
+    },
+    goToReport(report) {
+      this.$store.dispatch('pushBreadCrumbForReport', report);
+      this.$router.push(`/report/${report.id}`);
+    }    
   }
 }
 </script>

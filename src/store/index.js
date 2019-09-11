@@ -24,6 +24,9 @@ export default new Vuex.Store({
     pushBreadCrumbForProject(context, project) {
       context.commit('pushBreadCrumb', {name: project.name, url: `/project/${project.id}`});
     },
+    pushBreadCrumbForReport(context, report) {
+      context.commit('pushBreadCrumb', {name: report.name, url: `/report/${report.id}`});
+    },
     popBreadCrumb(context) {
       context.commit('popBreadCrumb');
     }
