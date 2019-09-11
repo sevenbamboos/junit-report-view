@@ -13,8 +13,12 @@ export default new Vuex.Store({
       state.breadcrumbs.push(payload);
     },
 
-    popBreadCrumb(state) {
-      state.breadcrumbs.pop();
+    popBreadCrumb(state, payload) {
+      const index = state.breadcrumbs.findIndex(x => x.name === payload);
+      if (index != -1) {
+        const len = state.breadcrumbs.length;
+        state.breadcrumbs.splice(index+1, len-index-1);
+      }
     }
   },
   actions: {
@@ -27,8 +31,8 @@ export default new Vuex.Store({
     pushBreadCrumbForReport(context, report) {
       context.commit('pushBreadCrumb', {name: report.name, url: `/report/${report.id}`});
     },
-    popBreadCrumb(context) {
-      context.commit('popBreadCrumb');
+    popBreadCrumb(context, breadcrumbName) {
+      context.commit('popBreadCrumb', breadcrumbName);
     }
   },
   getters: {

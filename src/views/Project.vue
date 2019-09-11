@@ -1,6 +1,6 @@
 <template>
   <div class="project">
-    <a @click="backToProjects">Back</a>
+    <!-- <a @click="backToProjects">Back</a> -->
     <Async 
       v-slot="slotProps" 
       :func="doGetProject" 
@@ -14,7 +14,7 @@
       </template>
       <template v-else>
         <div>
-          <div class="level" v-for="report of reports" :key="report.id">
+          <div class="level" v-for="report of sortedReports" :key="report.id">
             <div class="level-left">
               <a @click="goToReport(report)">{{ report.name }}</a>
             </div>
@@ -46,8 +46,15 @@ export default {
       project: 'projects/project',
       reports: 'projects/reports',
     }),
-    projectId () {
+    projectId() {
       return this.$route.params.id
+    },
+    sortedReports() {
+      return [...this.reports].sort((a, b) => {
+        const timeA = new Date(a.time).getTime();
+        const timeB = new Date(b.time).getTime();
+        return timeA - timeB;
+      });
     }
   },
 

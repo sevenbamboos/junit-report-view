@@ -1,6 +1,6 @@
 <template>
   <div class="report">
-    <a @click="backToProject">Back</a>
+    <!-- <a @click="backToProject">Back</a> -->
     <Async 
       v-slot="slotProps" 
       :func="doGetReport" 
@@ -16,17 +16,17 @@
         <div>
           <div>
             <h1 @click="toggleCollapseFailed">Failed Tests ({{ failedTests.length }})</h1>
-            <div class="level failed" :style="collapseFailedStyle" v-for="test of failedTests" :key="test.id">
+            <div class="level" :style="collapseFailedStyle" v-for="test of failedTests" :key="test.id">
               <div class="level-left">
-                {{ test.name }}
+                <a class="button is-danger">{{ test.name }}</a>
               </div>
             </div>
           </div>
           <div>
             <h1 @click="toggleCollapseIgnore">Ignore Tests ({{ ignoreTests.length }})</h1>
-            <div class="level ignore" :style="collapseIgnoreStyle" v-for="test of ignoreTests" :key="test.id">
+            <div class="level" :style="collapseIgnoreStyle" v-for="test of ignoreTests" :key="test.id">
               <div class="level-left">
-                {{ test.name }}
+                <a class="button is-warning">{{ test.name }}</a>
               </div>
             </div>
           </div>
@@ -34,7 +34,7 @@
             <h1 @click="toggleCollapsePassed">Passed Tests ({{ passedTests.length }})</h1>
             <div class="level" :style="collapsePassedStyle" v-for="test of passedTests" :key="test.id">
               <div class="level-left">
-                {{ test.name }}
+                <a class="button is-success">{{ test.name }}</a>
               </div>
             </div>
           </div>
@@ -118,11 +118,5 @@ export default {
 h1 {
   text-align: left;
   text-decoration-line: underline;
-}
-.failed {
-  color: red;
-}
-.ignore {
-  background: grey;
 }
 </style>

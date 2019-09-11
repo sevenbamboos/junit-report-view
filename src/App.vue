@@ -10,9 +10,9 @@
         Projects
       </router-link> -->
       <span v-for="breadcrumb of breadcrumbs" :key="breadcrumb.name">
-        <router-link :to="breadcrumb.url">
+        <a class="button is-link" @click="onClickBreadcrumb(breadcrumb)">
           {{ breadcrumb.name }}
-        </router-link>
+        </a>
         >>
       </span>
     </div>
@@ -37,6 +37,13 @@ export default {
 
   created() {
     this.$store.dispatch('pushBreadCrumbForProjectList');
+  },
+
+  methods: {
+    onClickBreadcrumb(breadcrumb) {
+      this.$store.dispatch('popBreadCrumb', breadcrumb.name);
+      this.$router.push(breadcrumb.url); 
+    }
   }
 }
 </script>
