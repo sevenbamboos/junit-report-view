@@ -53,7 +53,7 @@ export default {
       return [...this.reports].sort((a, b) => {
         const timeA = new Date(a.time).getTime();
         const timeB = new Date(b.time).getTime();
-        return timeA - timeB;
+        return timeB - timeA;
       });
     }
   },

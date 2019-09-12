@@ -98,7 +98,7 @@ const testCases = [];
     const report = {
       id: reportId,
       projectId: projectId,
-      name: faker.fake("{{random.words}}"),
+      // name: faker.fake("{{random.words}}"),
       time: new Date(faker.fake("{{date.past}}")),
       active: true
     };
@@ -108,7 +108,12 @@ const testCases = [];
 
   reportInProjects.sort((a, b) => a.time.getTime() - b.time.getTime());
 
+  let buildNo = getRandomInt(1, 100);
   reportInProjects.forEach((x, i, arr) => {
+    
+    x.name = `Build ${buildNo}`;
+    buildNo += 1;
+
     if (i > 0)  {
       x.previousReportId = arr[i-1].id
     }

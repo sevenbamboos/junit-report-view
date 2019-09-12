@@ -9,11 +9,17 @@
       >
         Projects
       </router-link> -->
-      <span v-for="breadcrumb of breadcrumbs" :key="breadcrumb.name">
-        <a class="button is-link" @click="onClickBreadcrumb(breadcrumb)">
-          {{ breadcrumb.name }}
-        </a>
-        >>
+      <span v-for="(breadcrumb, index) of breadcrumbs" :key="breadcrumb.name">
+        <template v-if="index < breadcrumbs.length-1">
+          <a class="button is-link" @click="onClickBreadcrumb(breadcrumb)">
+            {{ breadcrumb.name }}
+          </a> / 
+        </template>
+        <template v-else>
+          <a class="button is-link">
+            {{ breadcrumb.name }}
+          </a> 
+        </template>
       </span>
     </div>
     <router-view />
