@@ -14,8 +14,13 @@ export default new Vuex.Store({
     },
 
     popBreadCrumb(state, payload) {
-      const index = state.breadcrumbs.findIndex(x => x.name === payload);
-      if (index != -1) {
+      let index = -1;
+      if (payload) {
+        index = state.breadcrumbs.findIndex(x => x.name === payload);
+      } else {
+        index = state.breadcrumbs.length - 1
+      }
+      if (index > 0) {
         const len = state.breadcrumbs.length;
         state.breadcrumbs.splice(index+1, len-index-1);
       }

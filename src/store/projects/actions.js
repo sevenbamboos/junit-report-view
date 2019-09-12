@@ -16,6 +16,19 @@ const actions = {
       context.commit('updateProject', result);
       const reports = await getReports(result.id);
       if (reports) {
+
+        const reportMap = reports.reduce((accu, curr) => {
+          accu[curr.id] = curr;
+          return accu;
+        }, {});
+
+        reports.forEach((re, index) => {
+          if (re.previousReportId) {
+            re.previousReport = reportMap[re.previousReportId];
+            re.previousReport.nextReport = re;
+          }
+        });
+
         context.commit('updateReports', reports);
       }
 

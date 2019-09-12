@@ -13,8 +13,11 @@
       </template>
       <template v-else>
         <div>
-          <div v-if="report.previousReportId">
-            <a class="button" @click="goToPreviousReport()">Previous Report</a>
+          <div v-if="previousReport">
+            <a class="button" @click="goToPreviousReport">Previous</a>
+          </div>
+          <div v-if="nextReport">
+            <a class="button" @click="goToNextReport">Next</a>
           </div>
           <div class="summary">
             <report-brief :report="report" />
@@ -80,10 +83,29 @@ export default {
   computed: {
     ...Vuex.mapGetters({
       report: 'projects/report',
+      reports: 'projects/reports',
       tests: 'projects/tests',
     }),
     reportId() {
       return this.$route.params.id
+    },
+    previousReport() {
+      const reportId = this.report.id;
+      const reportInProject = this.reports.find(x => x.id === reportId);
+      if (reportInProject) {
+        return reportInProject.previousReport;
+      } else {
+        throw "Can't load reportInProject, reportId:" + this.report.id;
+      }
+    },
+    nextReport() {
+      const reportId = this.report.id;
+      const reportInProject = this.reports.find(x => x.id === reportId);
+      if (reportInProject) {
+        return reportInProject.nextReport;
+      } else {
+        throw "Can't load reportInProject, reportId:" + this.report.id;
+      }
     },
     failedTests() {
       return this.tests.filter(t => t.status === 'failed').sort(alphaCompare(t => t.name.toUpperCase()));
@@ -114,8 +136,18 @@ export default {
       await this.$store.dispatch('projects/getReport', this.reportId);
     },
     goToPreviousReport() {
-      this.$store.dispatch('popBreadCrumb');
-      this.$router.push(`/report/${this.report.previousReportId}`);
+      if (this.previousReport) {
+        // this.$store.dispatch('popBreadCrumb');
+        // this.$store.dispatch('pushBreadCrumbForReport', this.previousReport);
+        this.$router.push(`/report/${this.previousReport.id}`);
+      }
+    },
+    goToNextReport() {
+      if (this.nextReport) {
+        // this.$store.dispatch('popBreadCrumb');
+        // this.$store.dispatch('pushBreadCrumbForReport', this.nextReport);
+        this.$router.push(`/report/${this.nextReport.id}`);
+      }
     },
     toggleCollapseFailed() {
       this.collapseFailed = !this.collapseFailed;
