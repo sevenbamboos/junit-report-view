@@ -13,14 +13,26 @@
       </template>
       <template v-else>
         <div>
-          <div v-if="previousReport">
-            <a class="button" @click="goToPreviousReport">Previous</a>
-          </div>
-          <div v-if="nextReport">
-            <a class="button" @click="goToNextReport">Next</a>
-          </div>
-          <div class="summary">
-            <report-brief :report="report" />
+          <div class="level">
+            <div class="level-left">
+              <div v-if="previousReport">
+                <a class="button" @click="goToPreviousReport">Previous</a>
+              </div>
+              <div v-else>
+                <a class="button" disabled>No Previous</a>
+              </div>
+            </div>
+            <div class="summary">
+              <report-brief :report="report" />
+            </div>
+            <div class="level-right">
+              <div v-if="nextReport">
+                <a class="button" @click="goToNextReport">Next</a>
+              </div>
+              <div v-else>
+                <a class="button" disabled>No Next</a>
+              </div>
+            </div>
           </div>
           <div>
             <h1 @click="toggleCollapseFailed">Failed Tests ({{ failedTests.length }})</h1>
@@ -74,6 +86,8 @@ export default {
   data() {
     return {
       reload: undefined,
+      reloadPrev: false,
+      reloadNext: false,
       collapseFailed: false,
       collapseIgnore: true,
       collapsePassed: true
@@ -90,21 +104,29 @@ export default {
       return this.$route.params.id
     },
     previousReport() {
-      const reportId = this.report.id;
-      const reportInProject = this.reports.find(x => x.id === reportId);
-      if (reportInProject) {
-        return reportInProject.previousReport;
+      if (this.report) {
+        const reportId = this.report.id;
+        const reportInProject = this.reports.find(x => x.id === reportId);
+        if (reportInProject) {
+          return reportInProject.previousReport;
+        } else {
+          throw "Can't load reportInProject, reportId:" + this.report.id;
+        }
       } else {
-        throw "Can't load reportInProject, reportId:" + this.report.id;
+        return undefined;
       }
     },
     nextReport() {
-      const reportId = this.report.id;
-      const reportInProject = this.reports.find(x => x.id === reportId);
-      if (reportInProject) {
-        return reportInProject.nextReport;
+      if (this.report) {
+        const reportId = this.report.id;
+        const reportInProject = this.reports.find(x => x.id === reportId);
+        if (reportInProject) {
+          return reportInProject.nextReport;
+        } else {
+          throw "Can't load reportInProject, reportId:" + this.report.id;
+        }
       } else {
-        throw "Can't load reportInProject, reportId:" + this.report.id;
+        return undefined;
       }
     },
     failedTests() {
@@ -133,20 +155,29 @@ export default {
 
   methods: {
     async doGetReport() {
-      await this.$store.dispatch('projects/getReport', this.reportId);
+      if (this.reloadPrev) {
+        await this.$store.dispatch('projects/getReport', this.previousReport.id);
+      } else if (this.reloadNext) {
+        await this.$store.dispatch('projects/getReport', this.nextReport.id);
+      } else {
+        await this.$store.dispatch('projects/getReport', this.reportId);
+      }
+      await this.$store.dispatch('replaceBreadCrumbForReport', this.report);
     },
     goToPreviousReport() {
       if (this.previousReport) {
-        // this.$store.dispatch('popBreadCrumb');
-        // this.$store.dispatch('pushBreadCrumbForReport', this.previousReport);
+        this.reloadPrev = true;
+        this.reloadNext = false;
         this.$router.push(`/report/${this.previousReport.id}`);
+        this.reload = new Date();
       }
     },
     goToNextReport() {
       if (this.nextReport) {
-        // this.$store.dispatch('popBreadCrumb');
-        // this.$store.dispatch('pushBreadCrumbForReport', this.nextReport);
+        this.reloadPrev = false;
+        this.reloadNext = true;
         this.$router.push(`/report/${this.nextReport.id}`);
+        this.reload = new Date();
       }
     },
     toggleCollapseFailed() {

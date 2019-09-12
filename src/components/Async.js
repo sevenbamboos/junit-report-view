@@ -20,6 +20,7 @@ export default {
       try {
         this.result = await this.func.apply(null);
       } catch (e) {
+        console.error(e.stack);
         this.error = e;
       } finally {
         this.isPending = false;

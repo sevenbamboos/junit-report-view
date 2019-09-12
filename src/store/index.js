@@ -24,8 +24,16 @@ export default new Vuex.Store({
         const len = state.breadcrumbs.length;
         state.breadcrumbs.splice(index+1, len-index-1);
       }
+    },
+
+    replaceBreadCrumb(state, payload) {
+      if (state.breadcrumbs.length > 0) {
+        state.breadcrumbs.pop();
+        state.breadcrumbs.push(payload);
+      }
     }
   },
+
   actions: {
     pushBreadCrumbForProjectList(context) {
       context.commit('pushBreadCrumb', {name: 'Projects', url: '/project-list'});
@@ -35,6 +43,9 @@ export default new Vuex.Store({
     },
     pushBreadCrumbForReport(context, report) {
       context.commit('pushBreadCrumb', {name: report.name, url: `/report/${report.id}`});
+    },
+    replaceBreadCrumbForReport(context, report) {
+      context.commit('replaceBreadCrumb', {name: report.name, url: `/report/${report.id}`});
     },
     popBreadCrumb(context, breadcrumbName) {
       context.commit('popBreadCrumb', breadcrumbName);

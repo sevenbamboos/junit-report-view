@@ -1,8 +1,8 @@
 import { searchProjects as searchProjectsFromAPI, getProject as getProjectFromAPI, getReports, getReport as getReportFromAPI, getTests } from '../../api-client'
 
 const actions = {
-  async searchProjects(context, payload) {
-    const result = await searchProjectsFromAPI(payload);
+  async searchProjects(context, searchTerm) {
+    const result = await searchProjectsFromAPI(searchTerm);
     if (result) {
       context.commit('updateProjects', result);
     } else {
@@ -10,11 +10,11 @@ const actions = {
     }
   },
 
-  async getProject(context, payload) {
-    const result = await getProjectFromAPI(payload);
-    if (result) {
-      context.commit('updateProject', result);
-      const reports = await getReports(result.id);
+  async getProject(context, projectId) {
+    const project = await getProjectFromAPI(projectId);
+    if (project) {
+      context.commit('updateProject', project);
+      const reports = await getReports(project.id);
       if (reports) {
 
         const reportMap = reports.reduce((accu, curr) => {
@@ -37,8 +37,8 @@ const actions = {
     }
   },
 
-  async getReport(context, payload) {
-    const report = await getReportFromAPI(payload);
+  async getReport(context, reportId) {
+    const report = await getReportFromAPI(reportId);
     if (report) {
 
       report.statusFromPrevious = {fixed: 0, newCase: 0, newFailed: 0};
