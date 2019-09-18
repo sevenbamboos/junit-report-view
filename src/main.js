@@ -5,6 +5,7 @@ import Async from './components/Async'
 import Log from './components/Log'
 import 'bulma/css/bulma.css'
 import store from './store'
+import vuetify from './plugins/vuetify';
 
 Vue.component('Async', Async);
 Vue.component('Log', Log);
@@ -25,5 +26,6 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')

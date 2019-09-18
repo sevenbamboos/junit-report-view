@@ -1,38 +1,29 @@
 <template>
+
   <div class="project-list">
-    <nav class="level">
-      <div class="level-left">
-        <div class="level-item">
-          <p>
-            <strong>{{ projectCount }}</strong> projects
-          </p>
-        </div>
-        <div class="level-item">
-          <div class="field is-grouped is-grouped-centered">
-            <div class="control has-icons-left has-icons-right">
-              <input 
-                class="input is-primary is-small" 
-                v-model="searchTerm"
-                type="text"
-                placeholder="Find a project"
-                @keyup.enter="onSearchProjects"
-              >
-              <span class="icon is-left">
-                <i class="fas fa-search" />
-              </span>
-            </div>
-            <div class="control">
-              <a 
-                @click="onSearchProjects"
-                class="button is-primary is-small is-outlined"
-              >
-                Search
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
+
+    <v-card>
+      <v-card-title>
+        <h1>Project List</h1>
+      </v-card-title>
+      <v-card-text>
+        <v-form>
+          <v-text-field 
+            label="Search projects"
+            v-model="searchTerm"
+            @keyup.enter="onSearchProjects"
+          />
+        </v-form>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn
+          @click="onSearchProjects"
+          color="success"
+        >
+          Search
+        </v-btn>
+      </v-card-actions>
+    </v-card>
 
     <Async 
       v-slot="slotProps" 
@@ -46,26 +37,20 @@
         loading...
       </template>
       <template v-else>
-        <ul class="project-list">
-          <li 
-            v-for="(project, index) of projects" 
-            :key="project.id"
-          >
-            <div class="media">
-              <div class="media-left">
-                <p>{{ index+1 }}</p>
-              </div>
-              <div class="media-content">
-                <div class="has-text-left">
-                  {{ project.name }}
-                </div>
-              </div>
-              <div class="media-right">
-                <a @click="goToProject(project)">View</a>
-              </div>
-            </div>
-          </li>
-        </ul>
+        <v-list shaped>
+          <v-subheader>{{ projectCount }} projects</v-subheader>
+          <v-list-item-group color="primary">
+            <v-list-item
+              v-for="project of projects"
+              :key="project.id"
+            >
+              <v-list-item-content>
+                <v-list-item-title v-text="project.name" @click="goToProject(project)"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+
       </template>
     </Async>
   </div>

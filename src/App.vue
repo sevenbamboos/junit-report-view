@@ -1,29 +1,29 @@
 <template>
-  <div 
-    id="app" 
-    class="container"
-  >
-    <div id="nav">
-      <!-- <router-link 
-        to="/project-list"
-      >
-        Projects
-      </router-link> -->
-      <span v-for="(breadcrumb, index) of breadcrumbs" :key="breadcrumb.name">
-        <template v-if="index < breadcrumbs.length-1">
-          <a class="button is-link" @click="onClickBreadcrumb(breadcrumb)">
-            {{ breadcrumb.name }}
-          </a> / 
-        </template>
-        <template v-else>
-          <a class="button is-link">
-            {{ breadcrumb.name }}
-          </a> 
-        </template>
-      </span>
-    </div>
-    <router-view />
-  </div>
+
+  <v-app>
+    <v-app-bar app>
+      <v-toolbar-title class="headline text-uppercase">
+        <span v-for="(breadcrumb, index) of breadcrumbs" :key="breadcrumb.name">
+          <template v-if="index < breadcrumbs.length-1">
+            <a class="button is-link" @click="onClickBreadcrumb(breadcrumb)">
+              {{ breadcrumb.name }}
+            </a> / 
+          </template>
+          <template v-else>
+            <a class="button is-link">
+              {{ breadcrumb.name }}
+            </a> 
+          </template>
+        </span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+    </v-app-bar>
+
+    <v-content>
+      <router-view />
+    </v-content>
+  </v-app>
+
 </template>
 <script>
 
@@ -61,7 +61,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-
+  padding: 2em;
 }
 #nav {
   text-align: left;
